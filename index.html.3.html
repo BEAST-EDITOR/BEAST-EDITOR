@@ -1,0 +1,838 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+    <title>BEAST EDITOR — Your vision. Our execution.</title>
+    <meta name="description"
+        content="BEAST EDITOR connects creators with video editors, thumbnail designers and script writers. Get a transparent estimate in minutes.">
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;900&family=Inter:wght@400;600&display=swap">
+    <style>
+        :root {
+            color-scheme: dark;
+            --bg: #05060A;
+            --b: #00D9FF;
+            --p: #8B5CFF;
+            --m: #FF3CAC;
+            --t: #F5F7FF;
+            --mu: #929CB5;
+            --ok: #48FFB5;
+            --h: 'Orbitron', 'Segoe UI', system-ui, sans-serif;
+            --f: 'Inter', system-ui, sans-serif;
+            box-sizing: border-box;
+            padding-top: env(safe-area-inset-top, 0px);
+            padding-bottom: env(safe-area-inset-bottom, 0px)
+        }
+
+        * {
+            box-sizing: border-box
+        }
+
+        html {
+            scroll-padding-top: 80px;
+            background: var(--bg);
+            scroll-behavior: smooth
+        }
+
+        body {
+            margin: 0;
+            color: var(--t);
+            font: 16px/1.6 var(--f);
+            background: radial-gradient(60% 50% at 15% 0, #8b5cff33, transparent), radial-gradient(50% 45% at 90% 30%, #00d9ff22, transparent), var(--bg);
+            background-attachment: fixed;
+            overflow-x: hidden
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none
+        }
+
+        button,
+        input,
+        select,
+        textarea {
+            font: inherit;
+            color: inherit
+        }
+
+        button {
+            cursor: pointer
+        }
+
+        :focus-visible {
+            outline: 2px solid var(--b);
+            outline-offset: 2px
+        }
+
+        header {
+            position: sticky;
+            top: env(safe-area-inset-top, 0px);
+            z-index: 50;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 20px;
+            background: #05060Add;
+            backdrop-filter: blur(14px);
+            border-bottom: 1px solid #00d9ff33
+        }
+
+        .logo {
+            font: 900 17px var(--h);
+            letter-spacing: .12em;
+            white-space: nowrap
+        }
+
+        nav {
+            display: flex;
+            gap: 2px;
+            margin-left: auto
+        }
+
+        nav a {
+            font: 500 11px var(--h);
+            letter-spacing: .07em;
+            padding: 8px 9px;
+            border-radius: 6px;
+            color: var(--mu);
+            white-space: nowrap
+        }
+
+        nav a:hover,
+        nav a.on {
+            color: var(--b);
+            background: #00d9ff14
+        }
+
+        #menu {
+            display: none;
+            margin-left: auto;
+            background: none;
+            border: 1px solid #00d9ff55;
+            border-radius: 6px;
+            padding: 6px 10px
+        }
+
+        .btn {
+            display: inline-block;
+            border: 1px solid var(--b);
+            background: linear-gradient(90deg, #00d9ff26, #8b5cff40);
+            padding: 10px 18px;
+            border-radius: 8px;
+            font: 700 12px var(--h);
+            letter-spacing: .08em;
+            text-align: center;
+            transition: .2s
+        }
+
+        .btn:hover {
+            box-shadow: 0 0 22px #00d9ff77;
+            transform: translateY(-1px)
+        }
+
+        .btn.g {
+            background: none;
+            border-color: #929cb566;
+            color: var(--mu)
+        }
+
+        .btn.big {
+            padding: 14px 26px
+        }
+
+        main {
+            max-width: 1180px;
+            margin: 0 auto;
+            padding: 36px 20px 20px
+        }
+
+        h1,
+        h2,
+        h3 {
+            font-family: var(--h);
+            letter-spacing: .04em;
+            line-height: 1.15;
+            margin: 0 0 .5em
+        }
+
+        h1 {
+            font-size: clamp(28px, 5.5vw, 52px);
+            font-weight: 900
+        }
+
+        h2 {
+            font-size: clamp(22px, 3.4vw, 32px)
+        }
+
+        h3 {
+            font-size: 18px
+        }
+
+        .grad {
+            background: linear-gradient(90deg, var(--b), var(--p) 60%, var(--m));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent
+        }
+
+        .mu {
+            color: var(--mu)
+        }
+
+        .sec {
+            margin: 60px 0
+        }
+
+        .lab {
+            font: 500 12px var(--h);
+            color: var(--b);
+            letter-spacing: .14em
+        }
+
+        .hero {
+            text-align: center;
+            padding: 36px 0 10px
+        }
+
+        .grid {
+            display: grid;
+            gap: 18px;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr))
+        }
+
+        .card {
+            border: 1px solid #00d9ff44;
+            border-radius: 14px;
+            padding: 22px;
+            background: #0B1020ee;
+            border-color: color-mix(in srgb, var(--c, #00D9FF) 55%, transparent);
+            transition: box-shadow .25s
+        }
+
+        .card:hover {
+            box-shadow: 0 0 30px color-mix(in srgb, var(--c, #00D9FF) 35%, transparent)
+        }
+
+        .svc {
+            display: flex;
+            flex-direction: column;
+            gap: 10px
+        }
+
+        .svc .btn {
+            margin-top: auto;
+            border-color: var(--c)
+        }
+
+        .badge {
+            display: inline-block;
+            font: 700 11px var(--h);
+            letter-spacing: .1em;
+            color: var(--c, #00D9FF);
+            border: 1px solid var(--c, #00D9FF);
+            border-radius: 4px;
+            padding: 2px 8px;
+            margin-bottom: 8px
+        }
+
+        .pr {
+            font: 700 20px var(--h);
+            margin: 0
+        }
+
+        .pr small {
+            font: 400 12px var(--f);
+            color: var(--mu)
+        }
+
+        .pk {
+            display: flex;
+            flex-direction: column;
+            gap: 6px
+        }
+
+        .pk ul {
+            margin: 6px 0;
+            padding-left: 18px;
+            color: #cdd3e6
+        }
+
+        .pk .btn {
+            margin-top: auto
+        }
+
+        .note {
+            border-left: 3px solid var(--p);
+            background: #8b5cff14;
+            padding: 10px 14px;
+            border-radius: 0 8px 8px 0;
+            color: #cdd3e6;
+            font-size: 14px
+        }
+
+        .step {
+            display: flex;
+            gap: 14px
+        }
+
+        .step b {
+            font: 900 28px var(--h);
+            color: var(--p)
+        }
+
+        .tw {
+            overflow-x: auto;
+            border: 1px solid #00d9ff33;
+            border-radius: 12px
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            min-width: 560px;
+            font-size: 14px
+        }
+
+        th,
+        td {
+            padding: 9px 12px;
+            border-bottom: 1px solid #ffffff12;
+            text-align: left
+        }
+
+        th {
+            font: 500 11px var(--h);
+            color: var(--b)
+        }
+
+        details {
+            border: 1px solid #00d9ff33;
+            border-radius: 10px;
+            padding: 12px 16px;
+            margin-bottom: 10px;
+            background: #0b1020aa
+        }
+
+        summary {
+            cursor: pointer;
+            font-weight: 600
+        }
+
+        details p {
+            color: #cdd3e6;
+            margin: .6em 0 0
+        }
+
+        .wiz {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) 340px;
+            gap: 22px;
+            align-items: start
+        }
+
+        aside.card {
+            position: sticky;
+            top: calc(env(safe-area-inset-top, 0px) + 76px);
+            font-size: 14px
+        }
+
+        .ln {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+            padding: 3px 0;
+            border-bottom: 1px solid #ffffff10
+        }
+
+        .ln span:first-child {
+            color: var(--mu)
+        }
+
+        .ln span:last-child {
+            text-align: right
+        }
+
+        .tot {
+            font: 900 24px var(--h);
+            color: var(--ok);
+            margin: 8px 0 0
+        }
+
+        .fld {
+            margin-bottom: 16px
+        }
+
+        .fld>label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 6px
+        }
+
+        input[type=text],
+        input[type=number],
+        input[type=email],
+        input[type=date],
+        input[type=url],
+        textarea,
+        select {
+            width: 100%;
+            background: #05060A;
+            border: 1px solid #00d9ff44;
+            border-radius: 8px;
+            padding: 10px 12px
+        }
+
+        textarea {
+            min-height: 90px
+        }
+
+        .chk {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            padding: 5px 0
+        }
+
+        .chk input {
+            width: auto
+        }
+
+        .nv {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 8px
+        }
+
+        #err {
+            color: #ff7a9c;
+            min-height: 1.4em
+        }
+
+        .chips {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-bottom: 18px
+        }
+
+        .chip {
+            border: 1px solid #ffffff33;
+            color: var(--mu);
+            border-radius: 20px;
+            padding: 4px 12px;
+            font-size: 13px
+        }
+
+        .chip.on {
+            border-color: var(--ok);
+            color: var(--ok)
+        }
+
+        footer {
+            border-top: 1px solid #00d9ff33;
+            margin-top: 60px;
+            padding: 34px 20px;
+            background: #05060Acc
+        }
+
+        .fi {
+            max-width: 1180px;
+            margin: 0 auto
+        }
+
+        footer a {
+            color: var(--mu);
+            display: block;
+            padding: 2px 0
+        }
+
+        footer a:hover {
+            color: var(--b)
+        }
+
+        footer h4 {
+            font: 500 12px var(--h);
+            color: var(--b);
+            letter-spacing: .1em;
+            margin: 0 0 8px
+        }
+
+        .lgc {
+            display: grid;
+            grid-auto-flow: column;
+            grid-template-rows: repeat(4, auto);
+            grid-template-columns: 1fr 1fr;
+            gap: 4px 28px;
+            max-width: 560px;
+            margin-top: 22px
+        }
+
+        .lgc a {
+            display: block;
+            padding: 3px 0
+        }
+
+        #intro {
+            position: fixed;
+            inset: 0;
+            z-index: 100;
+            background: #020306;
+            display: grid;
+            place-items: center;
+            text-align: center;
+            transition: opacity .5s
+        }
+
+        #intro.out {
+            opacity: 0;
+            pointer-events: none
+        }
+
+        .il {
+            opacity: 0;
+            font: 700 clamp(14px, 3vw, 22px) var(--h);
+            letter-spacing: .3em;
+            color: var(--b);
+            animation: fl .5s forwards
+        }
+
+        .il.b {
+            font-size: clamp(30px, 8vw, 60px);
+            color: var(--t);
+            margin: 10px 0
+        }
+
+        @keyframes fl {
+            to {
+                opacity: 1
+            }
+        }
+
+        .ld {
+            width: min(320px, 70vw);
+            height: 4px;
+            background: #ffffff18;
+            margin: 22px auto 0;
+            position: relative
+        }
+
+        .ld i {
+            position: absolute;
+            inset: 0;
+            width: 0;
+            background: linear-gradient(90deg, var(--b), var(--m));
+            animation: ld 2.2s linear forwards
+        }
+
+        @keyframes ld {
+            to {
+                width: 100%
+            }
+        }
+
+        #skip {
+            position: absolute;
+            right: 16px;
+            bottom: 16px;
+            background: none;
+            border: 1px solid #929cb566;
+            color: var(--mu);
+            border-radius: 6px;
+            padding: 8px 14px
+        }
+
+        #app>* {
+            animation: pg .4s ease
+        }
+
+        @keyframes pg {
+            from {
+                opacity: 0;
+                transform: translateY(10px)
+            }
+        }
+
+        a.card.svc,
+        .pk {
+            transition: box-shadow .25s, transform .25s
+        }
+
+        a.card.svc:hover,
+        .pk:hover {
+            transform: translateY(-3px)
+        }
+
+        @media(prefers-reduced-motion:reduce) {
+            html {
+                scroll-behavior: auto
+            }
+
+            * {
+                animation: none !important;
+                transition: none !important
+            }
+
+            .il {
+                opacity: 1
+            }
+        }
+
+        @media(max-width:1100px) {
+            #menu {
+                display: block
+            }
+
+            nav {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                flex-direction: column;
+                background: #05060Af5;
+                padding: 10px 20px;
+                border-bottom: 1px solid #00d9ff33
+            }
+
+            nav.open {
+                display: flex
+            }
+        }
+
+        @media(max-width:860px) {
+            .wiz {
+                grid-template-columns: 1fr
+            }
+
+            aside.card {
+                position: static
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div id="intro">
+        <div>
+            <div class="il" style="animation-delay:.2s">SYSTEM ACTIVATED</div>
+            <div class="il b" style="animation-delay:.6s">BEAST EDITOR</div>
+            <div class="il" style="animation-delay:1s">ACCESS GRANTED</div>
+            <div class="ld"><i></i></div>
+        </div><button id="skip">SKIP</button>
+    </div>
+    <header><a class="logo" href="#home">BEAST EDITOR</a>
+        <nav id="nav"><a href="#home">HOME</a><a href="#editors">EDITORS</a><a href="#thumbnails">THUMBNAIL
+                DESIGNERS</a><a href="#scripts">SCRIPT WRITERS</a><a href="#how">HOW IT WORKS</a><a
+                href="#pricing">PRICING</a><a href="#about">ABOUT US</a><a href="#contact">CONTACTS</a></nav>
+        <button id="menu" aria-label="Menu">☰</button>
+    </header>
+    <main id="app"></main>
+    <footer>
+        <div class="fi">
+            <div class="grid">
+                <div>
+                    <div class="logo">BEAST EDITOR</div>
+                    <p class="mu">A marketplace that connects creators with editors, thumbnail designers and script
+                        writers. Your vision. Our execution.</p>
+                </div>
+                <div>
+                    <h4>QUICK LINKS</h4><a href="#home">Home</a><a href="#how">How it works</a><a
+                        href="#pricing">Pricing</a><a href="#about">About</a><a href="#faq">FAQ</a><a
+                        href="#contact">Contact</a>
+                </div>
+                <div>
+                    <h4>OUR SERVICES</h4><a href="#editors">Editors</a><a href="#thumbnails">Thumbnail designers</a><a
+                        href="#scripts">Script writers</a>
+                </div>
+                <div>
+                    <h4>CONTACT</h4><a id="fmail"></a><span id="fsoc"></span>
+                </div>
+            </div>
+            <div class="lgc" id="legal"></div>
+            <p class="mu" id="cp"></p>
+        </div>
+    </footer>
+    <script>setTimeout(function () { var i = document.getElementById("intro"); if (i) i.remove() }, 4500)</script>
+    <script>
+        const CFG = {
+            email: "beasteditor.business@gmail.com", owner: "BEAST EDITOR", rate: 93.86, cont: .15, maxQty: 50,
+            social: { instagram: "https://www.instagram.com/beast_editor_tidly?utm_source=qr&psln=MWp5N3o1dXJmcTg0bg==", youtube: "", discord: "https://discord.gg/SXwsumf3W", telegram: "https://t.me/+RK-QAgCw275kYmE1", whatsapp: "https://whatsapp.com/channel/0029VbDlUoe96H4QV1c1ND1I" }
+        };
+        const RATE_NOTE = "Configured rate: ₹93.86 = $1, set by the administrator on 10 Nov 2026. This is not a live market rate; USD values are approximate.";
+        const PROF = {
+            editor: { name: "EDITOR BRO", age: "15", since: "November 2026", phone: "91+ 1511202614", whatsapp: "https://whatsapp.com/channel/0029Vb8lrx6KLaHjAvpPYY19", telegram: "https://t.me/+MkjtRGCNBsVjMTBl", instagram: "be_editor_official", email: CFG.email },
+            thumb: { name: "THUMB DESIGNER", age: "15", since: "November 2026", phone: "91+ 1612202715", whatsapp: "https://whatsapp.com/channel/0029Vb9aFHAE50UqFGwhqU1V", telegram: "https://t.me/+XjwZr7fiasExMDNl", instagram: "be_thumbnail_official", email: CFG.email },
+            script: { name: "SCRIPTER BRO", age: "15", since: "November 2026", phone: "91+ 1701202816", whatsapp: "https://whatsapp.com/channel/0029Vb9PD8E1NCrL8UePnx1G", telegram: "https://t.me/+BxyPacYofw42MTY1", instagram: "be_scripter_official", email: CFG.email }
+        };
+        const D = {
+            editor: {
+                n: "EDITORS", p: "editors", u: "per video", ref: "Base price applies to a final video of 1–5 minutes at the first complexity level.", packs: [
+                    ["E", "BASIC EDITOR", 99, 5, "3–5 days", ["Basic cuts and trimming", "Simple transitions", "1080p export"]],
+                    ["D", "SKILLED EDITOR", 499, 5, "3–6 days", ["Clean cuts and pacing", "Basic captions", "Music synchronization"]],
+                    ["C", "ADVANCED EDITOR", 999, 5, "4–7 days", ["Dynamic editing", "Animated captions", "Sound design", "Motion graphics"]],
+                    ["B", "ELITE EDITOR", 1999, 5, "5–8 days", ["Advanced storytelling", "Cinematic transitions", "Color grading"]],
+                    ["A", "MASTER EDITOR", 2999, 5, "6–10 days", ["Premium storytelling", "Advanced motion graphics", "Cinematic color grading"]],
+                    ["S", "LEGENDARY EDITOR", 4999, 5, "8–14 days", ["High-end cinematic editing", "Compositing", "Premium visual effects"]]]
+            },
+            thumb: {
+                n: "THUMBNAIL DESIGNERS", p: "thumbnails", u: "per thumbnail", ref: "Base price covers one concept at Simple complexity.", packs: [
+                    ["R", "BASIC THUMBNAIL", 99, 3, "1–2 days", ["Basic composition", "Simple text treatment"]],
+                    ["P", "PRO THUMBNAIL", 499, 3, "1–3 days", ["Professional composition", "Improved contrast"]],
+                    ["E", "ELITE THUMBNAIL", 999, 3, "2–4 days", ["Advanced compositing", "Premium typography"]],
+                    ["L", "LEGENDARY THUMBNAIL", 1999, 3, "3–5 days", ["Complex visual storytelling", "Custom design direction"]]]
+            },
+            script: {
+                n: "SCRIPT WRITERS", p: "scripts", u: "per script", ref: "Base price applies to a 1–5 minute script with no special research.", packs: [
+                    ["R", "BASIC WRITER", 500, 2, "2–3 days", ["Basic outline", "Short-form script"]],
+                    ["P", "PRO WRITER", 1000, 2, "3–5 days", ["Hook", "Structured narrative", "Call to action"]],
+                    ["E", "ELITE WRITER", 2000, 2, "4–6 days", ["Audience-focused storytelling", "Retention-oriented structure"]],
+                    ["L", "LEGENDARY WRITER", 4000, 2, "5–8 days", ["Detailed research brief", "Multiple hook options", "Advanced narrative"]]]
+            }
+        };
+        const RC = ["#929CB5", "#00D9FF", "#8B5CFF", "#B06CFF", "#FF3CAC", "#FFB84D"], COL = { editor: "#00D9FF", thumb: "#FF3CAC", script: "#8B5CFF" };
+        const CX = { editor: [["Basic cuts", 1], ["Standard editing", 1.25], ["Dynamic editing and captions", 1.4], ["Advanced motion graphics", 1.6], ["Cinematic VFX and compositing", 2.2]], thumb: [["Simple", 1], ["Detailed", 1.3], ["Complex", 1.7]], script: [["No special research", 1], ["Light research", 1.2], ["Deep research", 1.5]] };
+        const ADD = { editor: { "Subtitles": { f: 300 }, "Animated captions": { f: 500 }, "Sound design": { p: .15 }, "Color grading": { p: .15 }, "Motion graphics": { p: .25 }, "Visual effects": { p: .4 }, "Thumbnail design": { f: 500 }, "Intro/outro": { f: 600 }, "Rush delivery (subject to availability)": { p: .3 }, "Extra revision": { p: .1 } }, thumb: { "Rush delivery (subject to availability)": { p: .3 }, "Extra revision": { p: .15 }, "Layered source file": { f: 150 } }, script: { "Rush delivery (subject to availability)": { p: .3 }, "Extra revision": { p: .1 }, "Multiple hook options": { f: 300 } } };
+        /* field = [key,label,type,options,required] */
+        const F = {
+            editor: [["type", "Video type", "sel", ["YouTube long-form", "YouTube Shorts", "Instagram Reels", "TikTok", "Gaming montage", "Documentary", "Educational video", "Advertisement", "Other"]], ["fmt", "Aspect ratio", "sel", ["16:9 landscape", "9:16 vertical", "1:1 square", "4:5 portrait"]], ["rawMin", "Raw footage (minutes)", "num"], ["finMin", "Final video (minutes)", "num"], ["qty", "Number of videos", "num"], ["cx", "Complexity", "cx"], ["ad", "Add-ons", "ad"], ["title", "Project title", "text", 0, 1], ["desc", "Brief description", "area", 0, 1], ["due", "Delivery deadline", "date", 0, 1], ["link", "File-sharing link (Drive, Dropbox…)", "url"], ["notes", "Additional instructions (never include passwords)", "area"]],
+            thumb: [["title", "Video title", "text", 0, 1], ["plat", "Platform", "sel", ["YouTube", "Instagram", "TikTok", "Other"]], ["qty", "Number of concepts", "num"], ["cx", "Design complexity", "cx"], ["ad", "Add-ons", "ad"], ["style", "Desired style / text / colors", "area"], ["due", "Deadline", "date", 0, 1], ["notes", "Additional notes", "area"]],
+            script: [["topic", "Topic", "text", 0, 1], ["lang", "Language", "sel", ["English", "Hindi", "Hinglish"]], ["finMin", "Target duration (minutes)", "num"], ["qty", "Number of scripts", "num"], ["cx", "Research needed", "cx"], ["ad", "Add-ons", "ad"], ["due", "Deadline", "date", 0, 1], ["notes", "Tone, audience, call to action, special instructions", "area"]]
+        };
+        const DEF = { type: "YouTube long-form", fmt: "16:9 landscape", rawMin: 10, finMin: 5, qty: 1, cx: 0, plat: "YouTube", lang: "English" };
+        const $ = s => document.querySelector(s), esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+        const inr = n => "₹" + (Math.round(n / 10) * 10).toLocaleString("en-IN"), usd = n => "$" + (Math.round(n / CFG.rate * 100) / 100).toLocaleString("en-US", { maximumFractionDigits: 2 }), both = n => inr(n) + " / " + usd(n), today = () => new Date().toISOString().slice(0, 10);
+        let S = { s: "", k: 0, v: {}, ref: "", st: 0 };
+        /* pricing */
+        function calc() {
+            const { s, k, v } = S, pk = D[s].packs[k], q = Math.min(CFG.maxQty, Math.max(1, Math.floor(+v.qty || 1))), m = s == "thumb" ? 1 : +v.finMin || 0;
+            if (m <= 0) return { err: "Enter the final length to see an estimate." };
+            const dur = s == "thumb" ? 1 : m <= 1 ? .5 : m <= 5 ? 1 : m <= 10 ? 1.6 : m <= 20 ? 2.5 : 2.5 + (m - 20) * .12, cx = CX[s][+v.cx || 0][1]; let raw = 1;
+            if (s == "editor") { const rm = +v.rawMin || 0; if (rm <= 0) return { err: "Enter the raw footage length to see an estimate." }; const r = rm / m; raw = r <= 3 ? 1 : r <= 8 ? 1.15 : r <= 20 ? 1.35 : 1.6 }
+            const price = pk[2], core = Math.max(price * dur * cx * raw * q, price * .4 * q), rows = [{ l: "Package base × " + q, a: price * q }];
+            if (s != "thumb") rows.push({ l: "Length factor", x: dur }); rows.push({ l: "Complexity factor", x: cx }); if (s == "editor") rows.push({ l: "Raw footage workload", x: raw });
+            rows.push({ l: "Core subtotal", a: core }); let tot = core;
+            (v.ad || []).forEach(n => { const a = ADD[s][n]; if (!a) return; const amt = a.f ? a.f * q : a.p * core; tot += amt; rows.push({ l: n, a: amt }) });
+            const notes = []; if (m > 20) notes.push("Over 20 minutes: a custom quote is recommended."); if (tot > 500000) notes.push("Above the calculator cap: request a custom quote.");
+            return { rows, total: tot, lo: tot * (1 - CFG.cont), hi: tot * (1 + CFG.cont), notes }
+        }
+        const brk = c => c.err ? `<p class="mu">${c.err}</p>` : c.rows.map(r => `<div class="ln"><span>${r.l}</span><span>${r.x != null ? "× " + r.x.toFixed(2) : inr(r.a)}</span></div>`).join("") + `<div class="tot">${inr(c.total)}<br><small style="font:600 15px var(--h)">${usd(c.total)}</small></div><p class="mu">Likely range: ${inr(c.lo)} – ${inr(c.hi)} (±${CFG.cont * 100}%)</p>${c.notes.map(x => `<p style="color:#ffb84d">${x}</p>`).join("")}<p class="note"><b>ESTIMATED PROJECT COST — FINAL PRICE SUBJECT TO CREATOR REVIEW.</b><br>${RATE_NOTE}</p>`;
+        const summ = () => {
+            const v = S.v, pk = D[S.s].packs[S.k], a = (v.ad || []).join(", ") || "None", r = [["Package", pk[1]]];
+            if (S.s == "editor") r.push(["Video type", v.type], ["Format", v.fmt], ["Raw footage", v.rawMin + " min"], ["Final length", v.finMin + " min"]);
+            if (S.s == "thumb") r.push(["Platform", v.plat]); if (S.s == "script") r.push(["Language", v.lang], ["Target length", v.finMin + " min"]);
+            r.push(["Complexity", CX[S.s][+v.cx || 0][0]], ["Quantity", v.qty], ["Add-ons", a], ["Delivery", pk[4]]); return r
+        };
+        const sumHTML = () => `<aside class="card" id="sum"><h3>LIVE ESTIMATE</h3>${summ().map(r => `<div class="ln"><span>${r[0]}</span><span>${esc(r[1])}</span></div>`).join("")}<div style="margin-top:10px">${brk(calc())}</div></aside>`;
+        /* shared pieces */
+        const ICO = { editor: '<svg viewBox="0 0 64 64" width="54" height="54" fill="none" stroke="#00D9FF" stroke-width="1.6"><rect x="6" y="14" width="52" height="36" rx="4"/><path d="M6 26h52M22 14v36M38 14v36"/></svg>', thumb: '<svg viewBox="0 0 64 64" width="54" height="54" fill="none" stroke="#FF3CAC" stroke-width="1.6"><rect x="6" y="10" width="52" height="44" rx="4"/><circle cx="22" cy="26" r="5"/><path d="M6 46l16-12 12 10 10-8 14 12"/></svg>', script: '<svg viewBox="0 0 64 64" width="54" height="54" fill="none" stroke="#8B5CFF" stroke-width="1.6"><path d="M14 6h28l10 10v42H14z"/><path d="M42 6v10h10M22 26h22M22 36h22M22 46h14"/></svg>' };
+        const SOC = { instagram: ["INSTAGRAM", "Edits, behind-the-scenes and creator spotlights."], youtube: ["YOUTUBE", "Showcases and editing tips."], discord: ["DISCORD", "Chat with creators and the community."], telegram: ["TELEGRAM", "Announcements and updates."], whatsapp: ["WHATSAPP", "Direct project chat and channel updates."] };
+        const socHTML = () => `<section class="sec"><span class="lab">[ COMMUNITY LINKS ]</span><h2>FIND BEAST EDITOR EVERYWHERE</h2><div class="grid">${Object.entries(SOC).map(([k, d]) => { const u = CFG.social[k] || "https://example.com/beasteditor-" + k; return `<a class="card svc" style="--c:#00D9FF" href="${esc(u)}" target="_blank" rel="noopener"><h3>${d[0]}</h3><p class="mu">${d[1]}</p><span class="btn">OPEN ${d[0]}</span></a>` }).join("")}</div></section>`;
+        const pkCard = (s, i, ci) => { const p = D[s].packs[i]; return `<article class="card pk" style="--c:${s == "editor" ? RC[ci ?? i] : COL[s]}"><span class="badge">RANK ${p[0]}</span><h3>${p[1]}</h3><p class="pr">${inr(p[2])} <small>/ ${usd(p[2])} ${D[s].u}</small></p><ul>${p[5].map(x => `<li>${x}</li>`).join("")}</ul><p class="mu" style="font-size:13px">${p[3]} revision${p[3] > 1 ? "s" : ""} · Delivery ${p[4]} (illustrative)</p><button class="btn" data-sel="${s}|${i}">SELECT THIS CLASS</button></article>` };
+        const how = () => `<div class="grid">${[["01", "SELECT YOUR CLASS", "Choose an editor, thumbnail designer, or scriptwriter."], ["02", "CUSTOMIZE YOUR PROJECT", "Provide the details and requirements."], ["03", "REVIEW YOUR ESTIMATE", "See a transparent price breakdown and estimated timeline."], ["04", "CONNECT AND COLLABORATE", "Contact the creator, negotiate, and confirm the agreement."]].map(s => `<div class="card step"><b>${s[0]}</b><div><h3>${s[1]}</h3><p class="mu">${s[2]}</p></div></div>`).join("")}</div>`;
+        function profHTML(s, m) {
+            const p = PROF[s], dg = x => String(x || "").replace(/\D/g, ""), isU = x => /^https?:\/\//i.test(x), hd = x => String(x || "").replace(/^@/, "").trim(), na = '<span class="mu">Not added yet</span>',
+            L = (k, v) => `<div class="ln"><span>${k}</span><span>${v}</span></div>`, lk = (h, t) => `<a style="color:var(--b)" href="${esc(h)}" target="_blank" rel="noopener">${esc(t)}</a>`,
+            tx = encodeURIComponent(m ? m.split("\n\n")[0] : "Hi, I found you on BEAST EDITOR and want to discuss a project.");
+            return L("Name", esc(p.name || "—")) + L("Age", esc(p.age || "—")) + L("On BEAST EDITOR since", esc(p.since || "—"))
+                + L("Mobile number", dg(p.phone).length >= 10 ? lk("tel:+" + dg(p.phone), p.phone) : na)
+                + L("WhatsApp", isU(p.whatsapp) ? lk(p.whatsapp, "Open WhatsApp") : dg(p.whatsapp).length >= 10 ? lk("https://wa.me/" + dg(p.whatsapp) + "?text=" + tx, "Chat on WhatsApp") : na)
+                + L("Telegram", p.telegram ? isU(p.telegram) ? lk(p.telegram, "Open Telegram") : lk("https://t.me/" + hd(p.telegram), "@" + hd(p.telegram)) : na)
+                + L("Instagram", p.instagram ? isU(p.instagram) ? lk(p.instagram, "Open Instagram") : lk("https://instagram.com/" + hd(p.instagram), "@" + hd(p.instagram)) : na)
+                + L("Email", lk("mailto:" + p.email, p.email)) + `<p class="mu" style="font-size:12px">Details are shown only with the creator’s consent.</p>`
+        }
+        const LG = [["privacy", "Privacy Policy", "This site has no server. Project requests, estimates and form entries stay on your device until you choose to email them: your own email app opens with a draft and nothing is sent until you press send. The site saves small preferences (saved estimates and accepted requests) in your browser storage and sets no advertising or tracking cookies. Typefaces load from Google Fonts, which may receive your IP address. Never enter passwords, card numbers or ID numbers. To ask about your data, email " + CFG.email + "."],
+        ["terms", "Terms and Conditions", "BEAST EDITOR helps clients describe a project, get a price estimate and contact independent creators. Prices are illustrative starting prices and the creator sets the final price. An accepted estimate is not a booking: work is confirmed only when you and the creator both agree scope, price, deadline, revisions and rights. Delivery times are not guarantees, and nobody can promise views, subscribers or revenue. Use the site respectfully and lawfully."],
+        ["cookies", "Cookie Policy", "This site sets no advertising or tracking cookies. It saves only your saved estimate and accepted project requests in your browser storage, on this device. Typefaces load from Google Fonts, which may receive your IP address. Links to WhatsApp, Telegram, Discord and Instagram open sites with their own policies. Clear this site’s data in your browser settings to remove saved items."],
+        ["refunds", "Refund and Cancellation Policy", "BEAST EDITOR does not currently process payments. Payments, refunds and cancellations are agreed directly between client and creator before work starts. Agree the price, deposit, cancellation terms and what happens to work already done, in writing. Problems? Email " + CFG.email + " with the project reference and screenshots."],
+        ["ip", "Intellectual Property and Usage Rights", "Nothing transfers automatically. Agree ownership or licence of the final work, source files and third-party assets (music, stock footage, fonts) in writing before work begins. Clients keep the rights in the footage and text they supply."],
+        ["community", "Community Guidelines", "Be respectful, clear and honest. No harassment, hate speech, illegal or infringing content, fake profiles or requests for passwords. Report problems to " + CFG.email + "."],
+        ["creator", "Creator Agreement", "Creators describe their skills honestly, show only work they own or may show, confirm scope and price in writing, tell clients early about delays and keep client material private. Creators are independent professionals, not employees of " + CFG.owner + "."],
+        ["support", "Contact and Support", "Questions about these policies or a project? Email " + CFG.email + " or use the social links on this site."]];
+        /* pages */
+        const R = {
+            home: () => `<section class="hero"><span class="lab">[ CREATOR SERVICES SYSTEM v1.0 ]</span><h1 class="grad" style="margin-top:14px">WHAT DO YOU WANT TO CREATE TODAY?</h1><p class="mu" style="font-size:18px">Choose your class. Select your upgrade. Build content that stands out.</p></section>
+<section id="classes" class="grid" style="margin-top:30px">${[["editor", "EDITOR", "Transform Raw Footage Into Cinematic Content.", "SELECT EDITOR", "editors"], ["thumb", "THUMBNAIL DESIGNER", "Turn Scrolls Into Clicks.", "SELECT DESIGNER", "thumbnails"], ["script", "SCRIPT WRITER", "Turn Ideas Into Powerful Stories.", "SELECT WRITER", "scripts"]].map(c => `<a href="#${c[4]}" class="card svc" style="--c:${COL[c[0]]}">${ICO[c[0]]}<h2>${c[1]}</h2><p class="mu">${c[2]}</p><span class="btn">${c[3]}</span></a>`).join("")}</section>
+<section class="sec"><h2>TRENDING SERVICES</h2><div class="grid">${pkCard("editor", 2)}${pkCard("thumb", 1)}${pkCard("script", 1)}</div></section>
+<section class="sec"><h2>HOW THE SYSTEM WORKS</h2>${how()}</section>
+${socHTML()}<section class="card" style="text-align:center;padding:40px"><h2 class="grad">UPGRADE YOUR CONTENT. UNLOCK YOUR POTENTIAL.</h2><a class="btn big" href="#editors">HIRE A CREATOR</a></section>`,
+            hire: () => R.home(),
+            svc: s => { const d = D[s], pk = d.packs; return `<span class="lab">${d.n}</span><h1 class="grad">${s == "editor" ? "CHOOSE YOUR EDITING CLASS" : s == "thumb" ? "CHOOSE YOUR THUMBNAIL CLASS" : "CHOOSE YOUR WRITING CLASS"}</h1><p class="note">Illustrative starting prices, not guaranteed quotes. ${d.ref} Final pricing depends on workload, availability and complexity. ${RATE_NOTE}</p><div class="card" style="margin-top:18px"><h3>YOUR CREATOR FOR THIS SERVICE</h3>${profHTML(s)}</div><div class="grid" style="margin-top:22px">${pk.map((p, i) => pkCard(s, i)).join("")}</div><h2 style="margin-top:46px">COMPARE ALL CLASSES</h2><div class="tw"><table><tr><th>CLASS</th><th>FROM</th><th>REVISIONS</th><th>DELIVERY</th></tr>${pk.map(p => `<tr><td>${p[0]} · ${p[1]}</td><td>${inr(p[2])}<br>${usd(p[2])}</td><td>${p[3]}</td><td>${p[4]}</td></tr>`).join("")}</table></div>` },
+            how: () => `<h1 class="grad">HOW IT WORKS</h1>${how()}<p class="note" style="margin-top:20px">Pricing is an estimate until the creator agrees to the scope.</p>`,
+            pricing: () => `<h1 class="grad">PRICING</h1><p class="note">${RATE_NOTE} All prices are illustrative starting prices.</p>${["editor", "thumb", "script"].map(s => `<h2 style="margin-top:34px">${D[s].n}</h2><div class="tw"><table><tr><th>CLASS</th><th>FROM (INR)</th><th>FROM (USD)</th><th>REVISIONS</th><th></th></tr>${D[s].packs.map((p, i) => `<tr><td>${p[1]}</td><td>${inr(p[2])}</td><td>${usd(p[2])}</td><td>${p[3]}</td><td><button class="btn" data-sel="${s}|${i}">SELECT</button></td></tr>`).join("")}</table></div><p class="mu">${D[s].ref}</p>`).join("")}`,
+            about: () => `<h1 class="grad">ABOUT BEAST EDITOR</h1><p class="mu" style="font-size:18px;max-width:720px">BEAST EDITOR connects content creators with creative professionals: editors, thumbnail designers and script writers.</p><div class="grid" style="margin-top:20px">${[["MISSION", "Make it simple for independent creators to find skilled help and understand costs before they commit."], ["VISION", "A creator economy where quality work and clear communication are the norm."], ["CORE VALUES", "Quality, clear communication, fair and transparent estimates, support for independent creators."]].map(c => `<div class="card"><h3>${c[0]}</h3><p class="mu">${c[1]}</p></div>`).join("")}</div>${socHTML()}`,
+            contact: () => `<h1 class="grad">CONNECT WITH THE SYSTEM</h1><p class="mu" style="font-size:18px">Have a question, partnership idea, or project inquiry? Reach out.</p><div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(300px,1fr))"><div class="card"><h3>DIRECT</h3><p>Support email:<br><a href="mailto:${CFG.email}" style="color:var(--b)">${CFG.email}</a></p><p class="mu">Find all our social links below.</p></div>
+<form class="card" id="cf"><div class="fld"><label>Name *</label><input type="text" name="n" required></div><div class="fld"><label>Email *</label><input type="email" name="e" required></div><div class="fld"><label>Inquiry category</label><select name="c"><option>Project inquiry</option><option>Partnership</option><option>Support</option><option>Other</option></select></div><div class="fld"><label>Message *</label><textarea name="m" required></textarea></div><input type="text" name="hp" tabindex="-1" autocomplete="off" style="position:absolute;left:-9999px" aria-hidden="true"><label class="chk"><input type="checkbox" name="k" required> I agree that my details are used to answer this message.</label><p id="err"></p><button class="btn" type="submit">SEND MESSAGE</button></form></div>${socHTML()}`,
+            faq: () => `<h1 class="grad">FAQ</h1>${[["What is BEAST EDITOR?", "A marketplace that helps creators describe a project, get a transparent estimate, and contact an editor, thumbnail designer or script writer."], ["Are the displayed prices final?", "No. They are illustrative starting prices. The calculator gives an estimate and the creator confirms the final price."], ["Can I negotiate with a creator?", "Yes. You can propose a budget, a timeline or scope changes when you contact them."], ["Does accepting an estimate confirm a booking?", "No. Booking is confirmed only when you and the creator agree scope, price and deadline."], ["What if my video is longer than 20 minutes?", "The price can change, and a custom quote is recommended."], ["How do refunds and cancellations work?", "They are agreed with the creator before work starts. See the Refund and Cancellation page."], ["Who owns the final work?", "Ownership and licensing must be agreed with the creator before work begins."], ["How do I share my footage?", "Add a file-sharing link (Drive, Dropbox or similar) in your project details. Never share passwords."]].map(q => `<details><summary>${q[0]}</summary><p>${q[1]}</p></details>`).join("")}`,
+            legal: h => { const l = LG.find(x => x[0] == h.slice(6)) || LG[0]; return `<h1 class="grad">${l[1]}</h1><div class="card" style="max-width:860px"><p>${esc(l[2])}</p><p class="mu" style="font-size:13px">Last updated: 10 November 2026.</p></div><div class="lgc" style="margin-top:18px">${LG.map(x => `<a style="color:var(--b)" href="#legal-${x[0]}">${x[1]}</a>`).join("")}</div>` },
+            build: () => { const fs = F[S.s], pk = D[S.s].packs[S.k]; return `<span class="lab">${D[S.s].n} · ${pk[1]}</span><h2>PROJECT DETAILS</h2><div class="wiz"><div class="card" id="form">${fs.map(fld).join("")}<p id="err"></p><div class="nv"><button class="btn" data-act="review">REVIEW PROJECT</button><button class="btn g" data-act="reset">RESET</button></div></div>${sumHTML()}</div>` },
+            review: () => { const c = calc(), pk = D[S.s].packs[S.k]; return `<h1 class="grad">REVIEW YOUR PROJECT</h1><div class="wiz"><div class="card">${summ().map(r => `<div class="ln"><span>${r[0]}</span><span>${esc(r[1])}</span></div>`).join("")}${F[S.s].filter(f => ["text", "area", "date", "url"].includes(f[2]) && S.v[f[0]]).map(f => `<div class="ln"><span>${f[1]}</span><span>${esc(S.v[f[0]])}</span></div>`).join("")}<p><b>Revision policy:</b> ${pk[3]} revision${pk[3] > 1 ? "s" : ""} included; extra revisions are priced or agreed with the creator.</p><p><b>Timeline:</b> ${pk[4]} (illustrative, depends on availability).</p><p class="note">Payment, cancellation and refund terms are agreed with the creator before work begins.</p><label class="chk"><input type="checkbox" id="terms"> I have read the <a href="#legal-terms" target="_blank" style="color:var(--b)">terms</a> and understand this is an estimate, not a confirmed booking.</label><p id="err"></p><div class="nv"><button class="btn g" data-act="edit">EDIT DETAILS</button><button class="btn g" data-act="save">SAVE ESTIMATE</button><button class="btn" data-act="accept" ${c.err ? "disabled" : ""}>ACCEPT ESTIMATE &amp; CONTACT CREATOR</button></div></div><aside class="card"><h3>PRICE BREAKDOWN</h3>${brk(c)}</aside></div>` },
+            ally: () => { const c = calc(); return `<h1 class="grad">YOUR NEXT CREATIVE ALLY</h1><div class="chips">${["Estimate Accepted", "Awaiting Creator Reply", "Negotiating", "Confirmed"].map((x, i) => `<span class="chip ${i == S.st ? "on" : ""}">${x}</span>`).join("")}</div><div class="wiz"><div class="card"><h3>PROJECT ${S.ref}</h3>${summ().map(r => `<div class="ln"><span>${r[0]}</span><span>${esc(r[1])}</span></div>`).join("")}<p>Budget estimate: <b>${c.err ? "—" : both(c.total)}</b><br>Requested deadline: <b>${esc(S.v.due || "Not set")}</b></p><p class="note">Your request is saved on this device only. Nothing is sent and nothing is booked until you email the creator below.</p><h3 style="margin-top:20px">MESSAGE THE CREATOR</h3><div class="fld"><label>What do you want to do?</label><select id="kind">${["Send a project inquiry", "Propose a different budget", "Request a revised timeline", "Discuss revisions", "Ask a question", "Share reference links", "Review the project scope"].map(k => `<option>${k}</option>`).join("")}</select></div><div class="fld"><label>Your message</label><textarea id="msg" placeholder="Write your note to the creator"></textarea></div><div class="nv"><button class="btn" data-act="mail">SEND BY EMAIL</button><button class="btn g" data-act="copy">COPY MESSAGE</button><button class="btn g" data-act="sent">I SENT MY MESSAGE</button></div><p id="err" class="mu"></p></div><aside class="card"><h3>CREATOR CONTACT</h3>${profHTML(S.s, msgText())}<p class="note">Status moves past “Awaiting Creator Reply” only after the creator responds and you both agree on scope, price and deadline.</p></aside></div><div class="card" style="margin-top:22px"><h3>HOW TO TALK TO YOUR CREATOR</h3><ul class="mu" style="padding-left:18px"><li>Start with your project reference (${S.ref}) and one clear message: what you need, your deadline and your links.</li><li>Agree scope, price, deadline, revisions and usage rights in writing before work starts.</li><li>Never share passwords. Share footage through file links instead.</li><li>Pay or send final files only after both sides agree. Be careful with anyone who rushes you.</li><li>Problem or dispute? Email ${CFG.email}.</li></ul></div>` }
+        };
+        /* form */
+        function fld(f) {
+            const [k, l, t, x, r] = f, v = S.v[k] ?? ""; let h = `<div class="fld"><label>${l}${r ? " *" : ""}</label>`;
+            if (t == "sel") h += `<select data-i="${k}">${x.map(o => `<option ${o == v ? "selected" : ""}>${o}</option>`).join("")}</select>`;
+            else if (t == "cx") h += `<select data-i="cx">${CX[S.s].map((o, i) => `<option value="${i}" ${i == +v ? "selected" : ""}>${o[0]} (× ${o[1]})</option>`).join("")}</select>`;
+            else if (t == "ad") h += Object.entries(ADD[S.s]).map(([n, a]) => `<label class="chk"><input type="checkbox" data-m="${esc(n)}" ${(S.v.ad || []).includes(n) ? "checked" : ""}> ${n} <span class="mu">(${a.f ? "+" + inr(a.f) + " each" : "+" + Math.round(a.p * 100) + "% of core"})</span></label>`).join("");
+            else if (t == "area") h += `<textarea data-i="${k}">${esc(v)}</textarea>`;
+            else h += `<input type="${t == "num" ? "number" : t == "date" ? "date" : t == "url" ? "url" : "text"}" ${t == "num" ? 'min="0" step="any"' : ""} ${t == "date" ? `min="${today()}"` : ""} data-i="${k}" value="${esc(v)}">`;
+            return h + "</div>"
+        }
+        function validate() {
+            const v = S.v, e = []; F[S.s].forEach(f => { const [k, l, t, , r] = f, x = v[k]; if (r && !String(x || "").trim()) e.push(l + " is required."); if (t == "url" && x && !/^https?:\/\//i.test(x)) e.push(l + " must start with http:// or https://."); if (t == "date" && x && x < today()) e.push("Deadline cannot be in the past."); if (t == "num" && (isNaN(+x) || +x < 0)) e.push(l + " must be zero or more.") });
+            if (S.s != "thumb" && !(+v.finMin > 0)) e.push("Final length must be above zero."); if (S.s == "editor" && +v.rawMin < +v.finMin) e.push("Raw footage should be at least as long as the final video.");
+            if (!(+v.qty >= 1 && +v.qty <= CFG.maxQty && Number.isInteger(+v.qty))) e.push("Quantity must be a whole number from 1 to " + CFG.maxQty + "."); return e
+        }
+        function msgText() { const c = calc(), v = S.v; return `Project ${S.ref} (${D[S.s].n}, ${D[S.s].packs[S.k][1]})\n` + summ().map(r => r[0] + ": " + r[1]).join("\n") + `\nTitle/topic: ${v.title || v.topic || ""}\nEstimate: ${c.err ? "n/a" : both(c.total)}\nDeadline: ${v.due || ""}\nLinks: ${v.link || ""}\n\n` + ((($("#kind") || {}).value) || "Inquiry") + ":\n" + ((($("#msg") || {}).value) || "") }
+        function start(s, k) { S = { s, k, v: Object.assign({ ad: [] }, DEF), ref: "", st: 0 }; if (location.hash == "#build") route(); else location.hash = "build" }
+        /* events */
+        document.addEventListener("click", e => {
+            const b = e.target.closest("[data-sel],[data-act]"); if (!b) return;
+            if (b.dataset.sel) { const [s, k] = b.dataset.sel.split("|"); return start(s, +k) }
+            const a = b.dataset.act, err = $("#err");
+            if (a == "review") { const x = validate(); if (x.length) err.innerHTML = x.join("<br>"); else if (calc().err) err.textContent = calc().err; else location.hash = "review" }
+            else if (a == "reset") { if (confirm("Clear everything you entered for this project?")) start(S.s, S.k) }
+            else if (a == "edit") location.hash = "build";
+            else if (a == "save") { try { localStorage.setItem("be_saved", JSON.stringify({ s: S.s, k: S.k, v: S.v })); err.style.color = "var(--ok)"; err.textContent = "Estimate saved on this device." } catch (x) { err.textContent = "Could not save in this browser." } }
+            else if (a == "accept") {
+                if (!$("#terms").checked) { err.textContent = "Tick the terms box to continue."; return } const x = calc(); if (x.err) { err.textContent = "Fix the estimate first."; return }
+                S.ref = "BE-" + today().slice(2).replace(/-/g, "") + "-" + Math.random().toString(36).slice(2, 6).toUpperCase(); S.st = 0;
+                try { const L = JSON.parse(localStorage.getItem("be_requests") || "[]"); L.push({ ref: S.ref, s: S.s, total: x.total, v: S.v }); localStorage.setItem("be_requests", JSON.stringify(L)) } catch (z) { } location.hash = "ally"
+            }
+            else if (a == "mail") { if (!$("#msg").value.trim()) { err.textContent = "Write a short message first."; return } location.href = `mailto:${CFG.email}?subject=${encodeURIComponent("Project " + S.ref + " — " + D[S.s].packs[S.k][1])}&body=${encodeURIComponent(msgText())}` }
+            else if (a == "copy") { (navigator.clipboard ? navigator.clipboard.writeText(msgText()) : Promise.reject()).then(() => err.textContent = "Message copied.", () => err.textContent = "Copy failed. Select the text manually.") }
+            else if (a == "sent") { S.st = 1; route(true) }
+        });
+        const upd = () => { const a = $("#sum"); if (a) a.outerHTML = sumHTML() };
+        document.addEventListener("input", e => { const t = e.target; if (t.dataset.i) { S.v[t.dataset.i] = t.value; upd() } });
+        document.addEventListener("change", e => { const t = e.target; if (t.dataset.m) { const a = S.v.ad || (S.v.ad = []), i = a.indexOf(t.dataset.m); i < 0 ? a.push(t.dataset.m) : a.splice(i, 1); upd() } });
+        document.addEventListener("submit", e => {
+            if (e.target.id != "cf") return; e.preventDefault(); const f = new FormData(e.target), err = $("#err"); if (f.get("hp")) return;
+            if (!/^\S+@\S+\.\S+$/.test(f.get("e"))) { err.textContent = "Enter a valid email address."; return }
+            location.href = `mailto:${CFG.email}?subject=${encodeURIComponent("[" + f.get("c") + "] from " + f.get("n"))}&body=${encodeURIComponent(f.get("m") + "\n\nReply to: " + f.get("e"))}`; err.style.color = "var(--ok)"; err.textContent = "Your email app should open with the message ready to send."
+        });
+        function route(keep) {
+            const h = location.hash.slice(1) || "home", k = h.startsWith("legal") ? "legal" : h, flow = ["build", "review", "ally"].includes(k);
+            if (flow && !S.s) { location.hash = "home"; return }
+            const m = { editors: "editor", thumbnails: "thumb", scripts: "script" };
+            try { $("#app").innerHTML = m[k] ? R.svc(m[k]) : (R[k] || R.home)(h) } catch (x) { console.error(x); $("#app").innerHTML = '<p class="note">Something went wrong loading this page. Go back <a href="#home" style="color:var(--b)">home</a>.</p>' }
+            const act = "#" + (k == "hire" ? "home" : flow ? D[S.s].p : k); document.querySelectorAll("nav a").forEach(a => a.classList.toggle("on", a.getAttribute("href") == act));
+            if (k == "hire") { const c = $("#classes"); if (c) c.scrollIntoView() } else if (!keep) scrollTo({ top: 0, behavior: "instant" })
+        }
+        /* init */
+        const endIntro = () => { const i = $("#intro"); if (!i) return; i.classList.add("out"); setTimeout(() => i.remove(), 600) };
+        setTimeout(endIntro, 2400); $("#skip").onclick = endIntro;
+        $("#menu").onclick = () => $("#nav").classList.toggle("open"); $("#nav").onclick = () => $("#nav").classList.remove("open");
+        $("#fmail").textContent = CFG.email; $("#fmail").href = "mailto:" + CFG.email;
+        $("#fsoc").innerHTML = Object.entries(CFG.social).filter(e => e[1]).map(e => `<a href="${esc(e[1])}" target="_blank" rel="noopener">${e[0]}</a>`).join("");
+        $("#legal").innerHTML = LG.map(l => `<a href="#legal-${l[0]}">${l[1]}</a>`).join("");
+        $("#cp").textContent = "© " + new Date().getFullYear() + " " + CFG.owner + ". All rights reserved.";
+        addEventListener("hashchange", () => route()); route();
+    </script>
+</body>
+
+</html>
